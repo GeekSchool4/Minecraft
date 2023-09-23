@@ -15,6 +15,8 @@ public class ChunkRenderer : MonoBehaviour
     public ChunkData ChunkData;
     private Mesh chunkMesh;
     private List<Vector3> verticies = new List<Vector3>();
+    private List<Vector2> uvs = new List<Vector2>();
+
     private List<int> triangles = new List<int>();
     public GameWorld ParentWorld;
     void Start()
@@ -44,7 +46,7 @@ public class ChunkRenderer : MonoBehaviour
     {
         verticies.Clear();
         triangles.Clear();
-
+        uvs.Clear();
         for (int y = 0; y < ChunkHeight; y++)
         {
             for (int x = 0; x < ChunkWidth; x++)
@@ -60,7 +62,7 @@ public class ChunkRenderer : MonoBehaviour
         chunkMesh.triangles = Array.Empty<int>();
         chunkMesh.vertices = verticies.ToArray(); 
         chunkMesh.triangles = triangles.ToArray();
-
+        chunkMesh.uv = uvs.ToArray();
         chunkMesh.Optimize();
 
         chunkMesh.RecalculateNormals();
@@ -134,6 +136,11 @@ public class ChunkRenderer : MonoBehaviour
 
     private void GenerateRightSide(Vector3Int blockPosition)
     {
+        uvs.Add(new Vector2(257f / 2048, 1921f / 2048));
+        uvs.Add(new Vector2(257f / 2048, 1));
+        uvs.Add(new Vector2(383f / 2048, 1921f / 2048));
+        uvs.Add(new Vector2(383f / 2048, 1));
+
         verticies.Add((new Vector3(1, 0, 0) + blockPosition) * BlockScale);
         verticies.Add((new Vector3(1, 1, 0) + blockPosition) * BlockScale);
         verticies.Add((new Vector3(1, 0, 1) + blockPosition) * BlockScale);
@@ -143,6 +150,11 @@ public class ChunkRenderer : MonoBehaviour
 
     private void GenerateLeftSide(Vector3Int blockPosition)
     {
+        uvs.Add(new Vector2(257f / 2048, 1921f / 2048));
+        uvs.Add(new Vector2(257f / 2048, 1));
+        uvs.Add(new Vector2(383f / 2048, 1921f / 2048));
+        uvs.Add(new Vector2(383f / 2048, 1));
+
         verticies.Add((new Vector3(0, 0, 0) + blockPosition)* BlockScale);
         verticies.Add((new Vector3(0, 0, 1) + blockPosition)* BlockScale);
         verticies.Add((new Vector3(0, 1, 0) + blockPosition)* BlockScale);
@@ -152,6 +164,11 @@ public class ChunkRenderer : MonoBehaviour
 
     private void GenerateFrontSide(Vector3Int blockPosition)
     {
+        uvs.Add(new Vector2(257f / 2048, 1921f / 2048));
+        uvs.Add(new Vector2(257f / 2048, 1));
+        uvs.Add(new Vector2(383f / 2048, 1921f / 2048));
+        uvs.Add(new Vector2(383f / 2048, 1));
+
         verticies.Add((new Vector3(0, 0, 1) + blockPosition)* BlockScale);
         verticies.Add((new Vector3(1, 0, 1) + blockPosition)* BlockScale);
         verticies.Add((new Vector3(0, 1, 1) + blockPosition)* BlockScale);
@@ -162,6 +179,12 @@ public class ChunkRenderer : MonoBehaviour
 
     private void GenerateBackSide(Vector3Int blockPosition)
     {
+
+        uvs.Add(new Vector2(257f / 2048, 1921f / 2048));
+        uvs.Add(new Vector2(257f / 2048, 1));
+        uvs.Add(new Vector2(383f / 2048, 1921f / 2048));
+        uvs.Add(new Vector2(383f / 2048, 1));
+
         verticies.Add((new Vector3(0, 0, 0) + blockPosition)*BlockScale);
         verticies.Add((new Vector3(0, 1, 0) + blockPosition)*BlockScale);
         verticies.Add((new Vector3(1, 0, 0) + blockPosition)*BlockScale);
@@ -172,6 +195,11 @@ public class ChunkRenderer : MonoBehaviour
 
     private void GenerateTopSide(Vector3Int blockPosition)
     {
+        uvs.Add(new Vector2(128f / 2048, 1921f / 2048));
+        uvs.Add(new Vector2(128f / 2048, 1));
+        uvs.Add(new Vector2(256f / 2048, 1921f / 2048));
+        uvs.Add(new Vector2(256f / 2048, 1));
+
         verticies.Add((new Vector3(0, 1, 0) + blockPosition)*BlockScale);
         verticies.Add((new Vector3(0, 1, 1) + blockPosition)*BlockScale);
         verticies.Add((new Vector3(1, 1, 0) + blockPosition)*BlockScale);
@@ -182,6 +210,11 @@ public class ChunkRenderer : MonoBehaviour
 
     private void GenerateBottomSide(Vector3Int blockPosition)
     {
+        uvs.Add(new Vector2(257f / 2048, 1921f / 2048));
+        uvs.Add(new Vector2(257f / 2048, 1));
+        uvs.Add(new Vector2(383f / 2048, 1921f / 2048));
+        uvs.Add(new Vector2(383f / 2048, 1));
+
         verticies.Add((new Vector3(0, 0, 0) + blockPosition)*BlockScale);
         verticies.Add((new Vector3(1, 0, 0) + blockPosition)*BlockScale);
         verticies.Add((new Vector3(0, 0, 1) + blockPosition)*BlockScale);
@@ -192,6 +225,12 @@ public class ChunkRenderer : MonoBehaviour
 
     private void AddLastVerticiesSquare()
     {
+
+        //uvs.Add(new Vector2(0, 0));
+        //uvs.Add(new Vector2(0, 1));
+        //uvs.Add(new Vector2(1, 0));
+        //uvs.Add(new Vector2(1, 1));
+
         triangles.Add(verticies.Count - 4);
         triangles.Add(verticies.Count - 3);
         triangles.Add(verticies.Count - 2);
