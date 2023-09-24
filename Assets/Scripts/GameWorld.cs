@@ -10,6 +10,7 @@ public class GameWorld : MonoBehaviour
     public ChunkRenderer ChunkPrefab;
     private Camera mainCamera;
     private Vector2Int currentPlayerChunk;
+    public TerrainGenerator Generator;
     private void Start()
     {
         mainCamera = Camera.main;
@@ -31,6 +32,18 @@ public class GameWorld : MonoBehaviour
             }
         }
     }
+    [ContextMenu("Regenerate")]
+    public void Regenerate()
+    {
+        Generator.Init();
+        foreach (var chunkData in ChunkDatas)
+        {
+            Destroy(chunkData.Value.Renderer.gameObject);
+        }
+
+        ChunkDatas.Clear();
+        StartCoroutine(Generate(false));
+    }
 
     private void LoadChunkAt(Vector2Int chunkPosition)
     {
@@ -39,7 +52,7 @@ public class GameWorld : MonoBehaviour
 
         ChunkData chunkData = new ChunkData();
         chunkData.ChunkPosition = chunkPosition;
-        chunkData.Blocks = TerrainGenerator.GenerateTerrain(xPos, zPos);
+        chunkData.Blocks = Generator.GenerateTerrain(xPos, zPos);
         ChunkDatas.Add(chunkPosition, chunkData);
 
         var chunk = Instantiate(ChunkPrefab, new Vector3(xPos, 0, zPos), Quaternion.identity, transform);
