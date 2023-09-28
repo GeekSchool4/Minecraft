@@ -9,10 +9,11 @@ public class EnemyScript : MonoBehaviour
     [SerializeField] Animator animator;
     private Transform player;
     private Vector3 startPosition;
+
     void Start()
     {
         navAgent = GetComponent<NavMeshAgent>();
-        //animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         startPosition = transform.position;
     }
@@ -20,13 +21,11 @@ public class EnemyScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //animator.SetFloat("Speed", navAgent.speed);
+        animator.SetFloat("Speed", navAgent.speed);
 
         if (Vector3.Distance(transform.position, player.position) <= 10)
         {
-            
             navAgent.destination = player.transform.position;
-            /*
             if (Vector3.Distance(transform.position, player.position) <= 2)
             {
                 animator.SetBool("isAttacking", true);
@@ -35,12 +34,6 @@ public class EnemyScript : MonoBehaviour
             {
                 animator.SetBool("isAttacking", false);
             }
-            */
-        }
-        else
-        {
-            navAgent.destination = startPosition;
-                  
         }
     }
 }
