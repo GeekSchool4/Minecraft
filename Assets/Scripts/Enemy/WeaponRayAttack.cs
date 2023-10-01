@@ -15,6 +15,10 @@ public class WeaponRayAttack : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
     }
+
+    private void Update()
+    {
+    }
     public void Hit()
     {
         RaycastHit HitInfo;

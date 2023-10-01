@@ -21,7 +21,6 @@ public class EnemyScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        animator.SetFloat("Speed", navAgent.speed);
 
         if (Vector3.Distance(transform.position, player.position) <= 10)
         {

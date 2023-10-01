@@ -33,7 +33,6 @@ public class ChunkRenderer : MonoBehaviour
     {
         ChunkData.Blocks[blockPosition.x, blockPosition.y, blockPosition.z] = BlockType.Grass;
         RegenerateMesh();
-
     }
 
     public void DestroyBlock(Vector3Int blockPosition)
@@ -41,7 +40,7 @@ public class ChunkRenderer : MonoBehaviour
         ChunkData.Blocks[blockPosition.x, blockPosition.y, blockPosition.z] = BlockType.Air;
         RegenerateMesh();
     }
-    
+
     void RegenerateMesh()
     {
         verticies.Clear();
