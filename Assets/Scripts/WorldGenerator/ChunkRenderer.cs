@@ -3,9 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.AI.Navigation;
 using UnityEngine;
-
-[RequireComponent(requiredComponent:typeof(MeshRenderer), requiredComponent2:typeof(MeshFilter))]
+//using UnityEngine.AI;
+using UnityEditor.AI;
+[RequireComponent(requiredComponent:typeof(MeshRenderer), requiredComponent2:typeof(MeshFilter), requiredComponent3:typeof(NavMeshSurface))]
 public class ChunkRenderer : MonoBehaviour
 {
     public const int ChunkWidth = 25;
@@ -21,14 +23,15 @@ public class ChunkRenderer : MonoBehaviour
     public GameWorld ParentWorld;
     void Start()
     {
-        chunkMesh = new Mesh();
-        RegenerateMesh();
 
+        chunkMesh = new Mesh();
         GetComponent<MeshFilter>().mesh = chunkMesh;
         GetComponent<MeshCollider>().sharedMesh = chunkMesh;
+        RegenerateMesh();
+        GetComponent<NavMeshSurface>().BuildNavMesh();
     }
 
-   
+
     public void SpawnBlock(Vector3Int blockPosition)
     {
         ChunkData.Blocks[blockPosition.x, blockPosition.y, blockPosition.z] = BlockType.Grass;
@@ -68,7 +71,6 @@ public class ChunkRenderer : MonoBehaviour
         chunkMesh.RecalculateBounds();
 
         GetComponent<MeshCollider>().sharedMesh = chunkMesh;
-
     }
 
     private void GenerateBlock(int x, int y, int z)
