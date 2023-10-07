@@ -7,11 +7,13 @@ using Unity.AI.Navigation;
 using UnityEngine;
 //using UnityEngine.AI;
 using UnityEditor.AI;
+using UnityEngine.AI;
+
 [RequireComponent(requiredComponent:typeof(MeshRenderer), requiredComponent2:typeof(MeshFilter), requiredComponent3:typeof(NavMeshSurface))]
 public class ChunkRenderer : MonoBehaviour
 {
     public const int ChunkWidth = 25;
-    public const int ChunkHeight = 128;
+    public const int ChunkHeight = 64;
     public const float BlockScale = 1f;
 
     public ChunkData ChunkData;
@@ -21,6 +23,7 @@ public class ChunkRenderer : MonoBehaviour
 
     private List<int> triangles = new List<int>();
     public GameWorld ParentWorld;
+    NavMeshSurface navMeshSurface;
     void Start()
     {
 
@@ -28,20 +31,57 @@ public class ChunkRenderer : MonoBehaviour
         GetComponent<MeshFilter>().mesh = chunkMesh;
         GetComponent<MeshCollider>().sharedMesh = chunkMesh;
         RegenerateMesh();
-        GetComponent<NavMeshSurface>().BuildNavMesh();
+        navMeshSurface = GetComponent<NavMeshSurface>();
+        navMeshSurface.collectObjects = CollectObjects.Children;
     }
 
+    private void Update()
+    {
+        if (navMeshSurface.navMeshData == null)
+        {
+            var mobs = GameObject.FindGameObjectsWithTag("enemy");
+            foreach(var mob in mobs)
+            {
+                if (
+                    Vector3.Distance(mob.transform.position, transform.position) < Vector3.Distance(transform.position,
+                    transform.position + new Vector3(ChunkWidth, ChunkHeight, ChunkWidth) / 2)
+                )
+                {
+                    BuildNavMesh();
+                }
+            }
+        }
+    }
+    void BuildNavMesh()
+    {
+        if(!GetComponent<NavMeshModifierVolume>())
+        {
+            NavMeshModifierVolume volume = gameObject.AddComponent<NavMeshModifierVolume>();
 
+            volume.size = GetComponent<MeshFilter>().mesh.bounds.size;
+            volume.center = GetComponent<MeshFilter>().mesh.bounds.center;
+        }
+
+        navMeshSurface.BuildNavMesh();
+    }
     public void SpawnBlock(Vector3Int blockPosition)
     {
         ChunkData.Blocks[blockPosition.x, blockPosition.y, blockPosition.z] = BlockType.Grass;
         RegenerateMesh();
+        if(navMeshSurface.navMeshData != null)
+        {
+            BuildNavMesh();
+        }
     }
 
     public void DestroyBlock(Vector3Int blockPosition)
     {
         ChunkData.Blocks[blockPosition.x, blockPosition.y, blockPosition.z] = BlockType.Air;
         RegenerateMesh();
+        if (navMeshSurface.navMeshData != null)
+        {
+            BuildNavMesh();
+        }
     }
 
     void RegenerateMesh()
@@ -78,7 +118,7 @@ public class ChunkRenderer : MonoBehaviour
         var blockPosition = new Vector3Int(x, y, z);
         if (GetBlockAtPosition(blockPosition) == 0) return;
 
-        if(GetBlockAtPosition(blockPosition + Vector3Int.right) == 0)GenerateRightSide(blockPosition);
+        if(GetBlockAtPosition(blockPosition + Vector3Int.right) == 0) GenerateRightSide(blockPosition);
         if (GetBlockAtPosition(blockPosition + Vector3Int.left) == 0) GenerateLeftSide(blockPosition);
         if (GetBlockAtPosition(blockPosition + Vector3Int.forward) == 0) GenerateFrontSide(blockPosition);
         if (GetBlockAtPosition(blockPosition + Vector3Int.back) == 0) GenerateBackSide(blockPosition);
