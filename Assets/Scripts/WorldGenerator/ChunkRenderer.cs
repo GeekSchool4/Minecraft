@@ -10,6 +10,7 @@ using UnityEditor.AI;
 using UnityEngine.AI;
 
 [RequireComponent(requiredComponent:typeof(MeshRenderer), requiredComponent2:typeof(MeshFilter), requiredComponent3:typeof(NavMeshSurface))]
+[RequireComponent(requiredComponent: typeof(MeshRenderer), requiredComponent2: typeof(EnemySpawner))]
 public class ChunkRenderer : MonoBehaviour
 {
     public const int ChunkWidth = 25;
@@ -33,6 +34,7 @@ public class ChunkRenderer : MonoBehaviour
         RegenerateMesh();
         navMeshSurface = GetComponent<NavMeshSurface>();
         navMeshSurface.collectObjects = CollectObjects.Children;
+        //BuildNavMesh();
     }
 
     private void Update()
