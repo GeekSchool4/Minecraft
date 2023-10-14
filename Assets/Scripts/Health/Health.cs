@@ -3,23 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 public class Health : MonoBehaviour
 {
     public int maxHealth;
     [SerializeField] HealthBar healthBar;
-    [HideInInspector] public int currentHealth;
+    [HideInInspector] public float currentHealth;
     public GameObject deathBloodVFX;
     public Animator animator;
     public GameObject damageBloodVFX;
     private GameObject player;
     public GameObject testLoseImage;
+    public GameObject GameManagerObject;
+
 
     void Start()
     {
         currentHealth = maxHealth;
         healthBar.SetBarValue(currentHealth, maxHealth);
         player = GameObject.FindGameObjectWithTag("Player");
+        //StartCoroutine(time());
+
     }
 
     private void Update()
@@ -45,7 +50,13 @@ public class Health : MonoBehaviour
             {
                 
                 //deathBloodVFX.SetActive(true);
-                Invoke("Death", 0.3f);
+                GameManagerObject.GetComponent<GameManager>().IncreaseScore(50);
+                GameManagerObject.GetComponent<GameManager>().IncreaseEnemiesKilled(1);
+                if (deathBloodVFX != null)
+                {
+                    deathBloodVFX.SetActive(true);
+                }
+                Invoke("Death", 1f);
             }
 
             if (gameObject.tag == "Player")
@@ -62,6 +73,20 @@ public class Health : MonoBehaviour
         }
 
 
+    }
+    
+
+    public void IncreaseHealth()
+    {
+        if (gameObject.tag == "Player")
+        {
+            if (currentHealth <= 100f)
+            {
+                currentHealth+=2f;
+                healthBar.SetBarValue(currentHealth, maxHealth);
+            }
+
+        }
     }
 
     public void Death()

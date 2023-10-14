@@ -12,6 +12,8 @@ public class EnemySpawner : MonoBehaviour
 
     private GameObject skeletonInstantiated;
     private GameObject reptileInstantiated;
+    //private GameObject golemInstantiated;
+
 
     private bool isSpawned;
 
@@ -21,7 +23,7 @@ public class EnemySpawner : MonoBehaviour
         Skeleton = GameObject.Find("DungeonSkeleton_demo");
         //Golem = GameObject.Find("Golem");
         Reptile = GameObject.Find("Reptile");
-        Player = GameObject.Find("First Person Controller Minimal");
+        Player = GameObject.Find("First Person Controller");
 
 
 
@@ -37,7 +39,7 @@ public class EnemySpawner : MonoBehaviour
             if (Vector3.Distance(transform.position, Player.transform.position)<= 50)
             {
                 bool isSkeletonSpawn = Random.value > 0.7;
-                //bool isGolemSpawn = Random.value > 0.9;
+                bool isGolemSpawn = Random.value > 0.9;
                 bool isReptileSpawn = Random.value > 0.9;
                 if (isSkeletonSpawn)
                 {
@@ -47,6 +49,12 @@ public class EnemySpawner : MonoBehaviour
                 {
                     reptileInstantiated = Instantiate(Reptile, new Vector3(transform.position.x + 10, transform.position.y + 50, transform.position.z + 10), Quaternion.identity);
                 }
+                /*
+                if (isGolemSpawn)
+                {
+                    golemInstantiated = Instantiate(Golem, new Vector3(transform.position.x + 10, transform.position.y + 50, transform.position.z + 10), Quaternion.identity);
+                }
+                */
                 isSpawned = true;
             }
 
@@ -62,6 +70,12 @@ public class EnemySpawner : MonoBehaviour
             {
                 Destroy(reptileInstantiated);
             }
+            /*
+            if (Golem != null)
+            {
+                Destroy(golemInstantiated);
+            }
+            */
         }
 
     }

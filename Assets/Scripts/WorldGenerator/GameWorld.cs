@@ -78,6 +78,7 @@ public class GameWorld : MonoBehaviour
 
     private void CheckInput()
     {
+        
         if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
         {
             bool isDestroying = Input.GetMouseButton(0);

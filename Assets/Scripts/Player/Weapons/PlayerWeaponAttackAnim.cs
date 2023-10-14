@@ -12,7 +12,7 @@ public class PlayerWeaponAttackAnim : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             animator.SetTrigger("IsAttacking");
         }
