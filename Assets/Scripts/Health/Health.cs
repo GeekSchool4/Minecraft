@@ -16,7 +16,7 @@ public class Health : MonoBehaviour
     private GameObject player;
     public GameObject testLoseImage;
     public GameObject GameManagerObject;
-
+    public GameObject canvas;
 
     void Start()
     {
@@ -50,7 +50,6 @@ public class Health : MonoBehaviour
             {
                 
                 //deathBloodVFX.SetActive(true);
-                GameManagerObject.GetComponent<GameManager>().IncreaseScore(50);
                 GameManagerObject.GetComponent<GameManager>().IncreaseEnemiesKilled(1);
                 if (deathBloodVFX != null)
                 {
@@ -91,6 +90,7 @@ public class Health : MonoBehaviour
 
     public void Death()
     {
+        canvas.GetComponent<ScoreQuest>().InscreaseScore();
         Destroy(gameObject);
     }
 }

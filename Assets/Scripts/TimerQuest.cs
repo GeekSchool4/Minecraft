@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SocialPlatforms.Impl;
 
-public class Timer : MonoBehaviour
+public class TimerQuest : MonoBehaviour
 {
     public int timerScore = 1000;
+    public int score = 0;
     public GameObject player;
     public TMP_Text scoreText;
-
+    public GameObject loseImage;
+    public GameObject winImage;
     public void Start()
     {
         StartCoroutine(time());
@@ -20,7 +23,7 @@ public class Timer : MonoBehaviour
         player.GetComponent<Health>().IncreaseHealth();
     }
 
-    IEnumerator time()
+    public IEnumerator time()
     {
         while (true)
         {
@@ -43,4 +46,6 @@ public class Timer : MonoBehaviour
         scoreText.text = timerScore.ToString();
 
     }
+
+
 }
