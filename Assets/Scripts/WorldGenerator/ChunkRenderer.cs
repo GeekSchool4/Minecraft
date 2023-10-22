@@ -39,36 +39,35 @@ public class ChunkRenderer : MonoBehaviour
     {
         if (navMeshSurface.navMeshData == null)
         {
-            var mobs = GameObject.FindGameObjectsWithTag("enemy");
-            foreach(var mob in mobs)
-            {
-                if (
-                    Vector3.Distance(mob.transform.position, transform.position) < Vector3.Distance(transform.position,
-                    transform.position + new Vector3(ChunkWidth, ChunkHeight, ChunkWidth) / 2)
-                )
-                {
+            //var mobs = GameObject.FindGameObjectsWithTag("enemy");
+            //foreach(var mob in mobs)
+            //{
+            //    if (
+            //        Vector3.Distance(mob.transform.position, transform.position) < Vector3.Distance(transform.position,
+            //        transform.position + new Vector3(ChunkWidth, ChunkHeight, ChunkWidth) / 2)
+            //    )
+            //    {
                     BuildNavMesh();
-                }
-            }
+            //    }
+            //}
         }
     }
     void BuildNavMesh()
     {
-        if(!GetComponent<NavMeshModifierVolume>())
+        NavMeshModifierVolume volume = GetComponent<NavMeshModifierVolume>();
+        if(volume == null)
         {
-            NavMeshModifierVolume volume = gameObject.AddComponent<NavMeshModifierVolume>();
-
-            volume.size = GetComponent<MeshFilter>().mesh.bounds.size;
-            volume.center = GetComponent<MeshFilter>().mesh.bounds.center;
+            volume = gameObject.AddComponent<NavMeshModifierVolume>();
         }
-
+        volume.size = GetComponent<MeshFilter>().mesh.bounds.size;
+        volume.center = GetComponent<MeshFilter>().mesh.bounds.center;
         navMeshSurface.BuildNavMesh();
     }
     public void SpawnBlock(Vector3Int blockPosition)
     {
         ChunkData.Blocks[blockPosition.x, blockPosition.y, blockPosition.z] = BlockType.Grass;
         RegenerateMesh();
-        if(navMeshSurface.navMeshData != null)
+        if (navMeshSurface.navMeshData != null)
         {
             BuildNavMesh();
         }
@@ -78,10 +77,11 @@ public class ChunkRenderer : MonoBehaviour
     {
         ChunkData.Blocks[blockPosition.x, blockPosition.y, blockPosition.z] = BlockType.Air;
         RegenerateMesh();
-        if (navMeshSurface.navMeshData != null)
+        if(navMeshSurface.navMeshData != null)
         {
             BuildNavMesh();
         }
+
     }
 
     void RegenerateMesh()
@@ -111,6 +111,7 @@ public class ChunkRenderer : MonoBehaviour
         chunkMesh.RecalculateBounds();
 
         GetComponent<MeshCollider>().sharedMesh = chunkMesh;
+        GetComponent<MeshFilter>().mesh = chunkMesh;
     }
 
     private void GenerateBlock(int x, int y, int z)

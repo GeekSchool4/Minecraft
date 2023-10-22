@@ -589,10 +589,10 @@ MonoBehaviour:
   rayOrigin: {fileID: 5702135876578877365}
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   playerLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
 --- !u!1 &3267272609904088896
 GameObject:
   m_ObjectHideFlags: 0
